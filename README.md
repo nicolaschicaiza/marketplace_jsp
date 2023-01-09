@@ -1,2 +1,2 @@
-# marketplace_jsp
-Proyecto de control de pedidos para una tienda de productos en Java Server Page.
+# Marketplace Project
+Un proyecto de control de pedidos para productos de tiendas con acceso de usuarios realizado en Java Server Page.

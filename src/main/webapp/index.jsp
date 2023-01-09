@@ -1,17 +1,8 @@
-<%-- 
-    Document   : index
-    Created on : 6/01/2023, 10:51:42 a. m.
-    Author     : jnico
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<%@include file="tamplates/template.jsp" %>
+<body>
+    <br>
+    <%@include file="vistas/producto/producto.list.jsp" %>
+</body>

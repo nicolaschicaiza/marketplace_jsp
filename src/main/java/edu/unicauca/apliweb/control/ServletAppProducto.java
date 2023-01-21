@@ -19,6 +19,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author jnico
  */
+
+@WebServlet("/")
 public class ServletAppProducto extends HttpServlet {
     private ProductoJpaController productoJPA;
     private final static String PU = "edu.unicauca.apliweb_Marketplace_war_1.0PU";
@@ -82,19 +85,19 @@ public class ServletAppProducto extends HttpServlet {
                 case "/new": //Muestra el formulario para crear un nuevo cliente
                     showNewForm(request, response);
                     break;
-                case "/producto/insert": //ejecuta la creación de un nuevo cliente en la DB
+                case "/insert": //ejecuta la creación de un nuevo cliente en la DB
                     insertProducto(request, response);
                     break;
-                case "/producto/delete": //Ejecuta la eliminación de un cliente de la BD
+                case "/delete": //Ejecuta la eliminación de un cliente de la BD
                     deleteProducto(request, response);
                     break;
-                case "/producto/edit": //Muestra el formulario para editar un cliente
+                case "/edit": //Muestra el formulario para editar un cliente
                     showEditForm(request, response);
                     break;
-                case "/producto/update": //Ejecuta la edición de un cliente de la BD
+                case "/update": //Ejecuta la edición de un cliente de la BD
                     updateProducto(request, response);
                     break;
-                case "/list":
+                default:
                     listProductos(request, response);
                     break;
                 }
@@ -114,8 +117,10 @@ public class ServletAppProducto extends HttpServlet {
         private void listProductos (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             List<Producto> listaProducto = productoJPA.findProductoEntities();
-            request.setAttribute("listProducto", listaProducto);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/producto/producto.list.jsp");
+            System.out.println("Lista producto: " + listaProducto.size());
+//            request.setAttribute("listProducto", listaProducto);
+            request.setAttribute("prueba", "Hola");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("producto.list.jsp");
             dispatcher.forward(request, response);
         }
 

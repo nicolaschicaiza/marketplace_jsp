@@ -3,10 +3,10 @@
 <header>
   <nav class="navbar navbar-expand-md navbar-dark" style="background-color: tomato">
     <div>
-      <a href="<%=request.getContextPath()%>/vistas/producto/producto.list.jsp" class="navbar-brand"> Awayhub </a>
+      <a href="<%=request.getContextPath()%>/producto.list.jsp" class="navbar-brand"> Awayhub </a>
     </div>
     <ul class="navbar-nav">
-      <li><a href="<%=request.getContextPath()%>/vistas/producto/producto.list.jsp" class="nav-link">Home</a></li>
+      <li><a href="<%=request.getContextPath()%>/producto.list.jsp" class="nav-link">Home</a></li>
     </ul>
     <ul class="navbar-nav">
       <li><a href="<%=request.getContextPath()%>/vistas/pedido/pedido.list.jsp" class="nav-link">Pedidos</a></li>

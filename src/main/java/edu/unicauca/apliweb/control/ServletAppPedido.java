@@ -18,6 +18,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author jnico
  */
+@WebServlet("/pedido")
 public class ServletAppPedido extends HttpServlet {
     private PedidoJpaController pedidoJPA;
     private final static String PU = "edu.unicauca.apliweb_Marketplace_war_1.0PU";

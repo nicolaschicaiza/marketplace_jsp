@@ -81,12 +81,24 @@ public class ServletAppPedido extends HttpServlet {
             out.println("</html>");
             String action = request.getServletPath();
             switch (action) {
-                case "/new" -> showNewFrom(request, response);
-                case "/insert" -> insertPedido(request, response);
-                case "/delete" -> deletePedido(request, response);
-                case "/edit" -> showEditForm(request, response);
-                case "/update" -> updatePedido(request, response);
-                default -> listPedidos(request, response);
+                case "/new": //Muestra el formulario para crear un nuevo cliente
+                    showNewForm(request, response);
+                    break;
+                case "/insert": //ejecuta la creación de un nuevo cliente en la DB
+                    insertPedido(request, response);
+                    break;
+                case "/delete": //Ejecuta la eliminación de un cliente de la BD
+                    deletePedido(request, response);
+                    break;
+                case "/edit": //Muestra el formulario para editar un cliente
+                    showEditForm(request, response);
+                    break;
+                case "/update": //Ejecuta la edición de un cliente de la BD
+                    updatePedido(request, response);
+                    break;
+                default:
+                    listPedidos(request, response);
+                    break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -102,8 +114,9 @@ public class ServletAppPedido extends HttpServlet {
      * @throws IOException      si se produce un error en I/O
      */
     private void listPedidos(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws SQLException, ServletException, IOException {
         List<Pedido> listaPedido = pedidoJPA.findPedidoEntities();
+        System.out.println("Lista pedido: " + listaPedido.size());
         request.setAttribute("listPedido", listaPedido);
         RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/pedido/pedido.list.jsp");
         dispatcher.forward(request, response);
@@ -117,7 +130,7 @@ public class ServletAppPedido extends HttpServlet {
      * @throws ServletException si se produce un error en el servidor
      * @throws IOException      si se produce un error en I/O
      */
-    private void showNewFrom(HttpServletRequest request, HttpServletResponse response)
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/pedido/pedido.from.jsp");
         dispatcher.forward(request, response);

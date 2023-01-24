@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jnico
  */
 
-@WebServlet("/")
+@WebServlet("/producto")
 public class ServletAppProducto extends HttpServlet {
     private ProductoJpaController productoJPA;
     private final static String PU = "edu.unicauca.apliweb_Marketplace_war_1.0PU";
@@ -70,6 +70,7 @@ public class ServletAppProducto extends HttpServlet {
             System.out.println("Nombre: " + producto.getNombre() + " Precio: " + producto.getPrecio());
         }
         String action = request.getServletPath();
+        System.out.println("Action: " + action);
         try {//(PrintWriter out = response.getWriter())
             /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
@@ -115,12 +116,12 @@ public class ServletAppProducto extends HttpServlet {
          * @throws IOException      si se produce un error en I/O
          */
         private void listProductos (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws SQLException, ServletException, IOException {
             List<Producto> listaProducto = productoJPA.findProductoEntities();
             System.out.println("Lista producto: " + listaProducto.size());
-//            request.setAttribute("listProducto", listaProducto);
-            request.setAttribute("prueba", "Hola");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("producto.list.jsp");
+            request.setAttribute("listProducto", listaProducto);
+            // request.setAttribute("prueba", "Hola");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/producto/producto.list.jsp");
             dispatcher.forward(request, response);
         }
 
@@ -177,8 +178,8 @@ public class ServletAppProducto extends HttpServlet {
         private void insertProducto (HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
             // toma los datos del formulario de productos
-            String nombre = request.getParameter("name");
-            int precio = Integer.parseInt(request.getParameter("price"));
+            String nombre = request.getParameter("nombre");
+            int precio = Integer.parseInt(request.getParameter("precio"));
 
             // crea un objeto de tipo Producto vacío y lo llena con los datos obtenidos
             Producto producto = new Producto();
@@ -203,9 +204,9 @@ public class ServletAppProducto extends HttpServlet {
         private void updateProducto (HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
             // toma los datos enviados por el formulario de clientes
-            int id = Integer.parseInt(request.getParameter("id"));
-            String nombre = request.getParameter("name");
-            int precio = Integer.parseInt(request.getParameter("price"));
+            int id = Integer.parseInt(request.getParameter("idProducto"));
+            String nombre = request.getParameter("nombre");
+            int precio = Integer.parseInt(request.getParameter("precio"));
 
             // crea un objeto vacío y lo llena con los datos del producto
             Producto producto = new Producto();

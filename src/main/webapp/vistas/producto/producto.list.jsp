@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/templates/template.jsp" %>
 <body>
-<div class="row">
+<div class="row" style="margin-left: 15px; margin-right: 15px;">
     <div class="container">
         <br>
         <h3 class="text-center">Lista de Productos</h3>
@@ -36,8 +36,19 @@
                     <td>
                         <c:out value="${producto.precio}"/>
                     </td>
-                    <td><a href="edit_producto?id=<c:out value='${producto.idProducto}' />">Editar</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp; <a href="<%=request.getContextPath()%>/delete_producto?id=<c:out value='${producto.idProducto}' />">Eliminar</a></td>
+                    <td>
+                        <div class="d-flex justify-content-center gap">
+                            <a class="btn btn-success mr-2" href="<%=request.getContextPath()%>/add_producto?id=<c:out value='${producto.idProducto}' />">
+                                <i class="fa fa-cart-shopping"></i>
+                            </a>
+                            <a class="btn btn-primary mr-2" href="edit_producto?id=<c:out value='${producto.idProducto}' />">
+                                <i class="fa fa-marker"></i>
+                            </a>
+                            <a class="btn btn-danger" href="<%=request.getContextPath()%>/delete_producto?id=<c:out value='${producto.idProducto}' />">
+                                <i class="fa fa-trash-alt"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             </c:forEach>
             <!-- } -->

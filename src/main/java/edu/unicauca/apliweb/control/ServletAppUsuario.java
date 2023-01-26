@@ -5,9 +5,9 @@
 package edu.unicauca.apliweb.control;
 
 import edu.unicauca.apliweb.persistence.entities.Pedido;
-import edu.unicauca.apliweb.persistence.entities.Usuario;
+import edu.unicauca.apliweb.persistence.entities.Usuarios;
 import edu.unicauca.apliweb.persistence.jpa.PedidoJpaController;
-import edu.unicauca.apliweb.persistence.jpa.UsuarioJpaController;
+import edu.unicauca.apliweb.persistence.jpa.UsuariosJpaController;
 import edu.unicauca.apliweb.persistence.jpa.exceptions.IllegalOrphanException;
 import edu.unicauca.apliweb.persistence.jpa.exceptions.NonexistentEntityException;
 
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/usuario")
 public class ServletAppUsuario extends HttpServlet {
-    private UsuarioJpaController usuarioJPA;
+    private UsuariosJpaController usuarioJPA;
     private final static String PU = "edu.unicauca.apliweb_Marketplace_war_1.0PU";
 
     @Override
@@ -44,12 +44,12 @@ public class ServletAppUsuario extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU);
         //creamos una instancia del controlador JPA para la clase productos y le
         //pasamos el gestor de entidades
-        usuarioJPA = new UsuarioJpaController(emf);
+        usuarioJPA = new UsuariosJpaController(emf);
         //esta parte es solamente para realizar la prueba:
         //listamos todos los clientes de la base de datos y los imprimimos en consola
-        List<Usuario> listaUsuario = usuarioJPA.findUsuarioEntities();
+        List<Usuarios> listaUsuarios = usuarioJPA.findUsuariosEntities();
         //imprimimos los clientes en consola
-        for (Usuario usuario : listaUsuario ) {
+        for (Usuarios usuario : listaUsuarios ) {
             System.out.println("Nombre: " + usuario.getNombre() + ", Cédula: " + usuario.getCedula() +
                     ", Username: " + usuario.getUsername() + ", Password: " + usuario.getPassword());
         }
@@ -75,9 +75,9 @@ public class ServletAppUsuario extends HttpServlet {
             out.println("<title>Awayhub, Controla tus usuarios</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Lista de Usuarios en el Servlet " + request.getContextPath() + "</h1>");
-            List<Usuario> listaUsuarios = usuarioJPA.findUsuarioEntities();
-            for (Usuario usuario : listaUsuarios) {
+            out.println("<h1>Lista de Usuarioss en el Servlet " + request.getContextPath() + "</h1>");
+            List<Usuarios> listaUsuarioss = usuarioJPA.findUsuariosEntities();
+            for (Usuarios usuario : listaUsuarioss) {
                 System.out.println("Nombre: " + usuario.getNombre() + ", Cédula: " + usuario.getCedula() +
                         ", Username: " + usuario.getUsername() + ", Password: " + usuario.getPassword());
             }
@@ -86,11 +86,11 @@ public class ServletAppUsuario extends HttpServlet {
             String action = request.getServletPath();
             switch (action) {
                 case "/new" -> showNewFrom(request, response);
-                case "/insert" -> insertUsuario(request, response);
-                case "/delete" -> deleteUsuario(request, response);
+                case "/insert" -> insertUsuarios(request, response);
+                case "/delete" -> deleteUsuarios(request, response);
                 case "/edit" -> showEditForm(request, response);
-                case "/update" -> updateUsuario(request, response);
-                default -> listUsuarios(request, response);
+                case "/update" -> updateUsuarios(request, response);
+                default -> listUsuarioss(request, response);
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -105,10 +105,10 @@ public class ServletAppUsuario extends HttpServlet {
      * @throws ServletException si se produce un error en el servidor
      * @throws IOException      si se produce un error en I/O
      */
-    private void listUsuarios(HttpServletRequest request, HttpServletResponse response)
+    private void listUsuarioss(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Usuario> listaUsuario = usuarioJPA.findUsuarioEntities();
-        request.setAttribute("listUsuario", listaUsuario);
+        List<Usuarios> listaUsuarios = usuarioJPA.findUsuariosEntities();
+        request.setAttribute("listUsuarios", listaUsuarios);
         RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/usuario/usuario.list.jsp");
         dispatcher.forward(request, response);
     }
@@ -142,12 +142,12 @@ public class ServletAppUsuario extends HttpServlet {
         // toma el id del usuario a ser editado
         int id = Integer.parseInt(request.getParameter("id"));
         // busca el usuario en la base de datos
-        Usuario existingUsuario = usuarioJPA.findUsuario(id);
+        Usuarios existingUsuarios = usuarioJPA.findUsuarios(id);
         RequestDispatcher dispatcher = null;
-        if (existingUsuario != null) {
+        if (existingUsuarios != null) {
             // si lo encuentra lo envía al formulario
             dispatcher = request.getRequestDispatcher("vistas/usuario/usuario.form.jps");
-            request.setAttribute("usuario", existingUsuario);
+            request.setAttribute("usuario", existingUsuarios);
         } else {
             // si no lo encuentra regresa a la página con la lista de los clientes
             dispatcher = request.getRequestDispatcher("vistas/usuario/usuario.list.jsp");
@@ -163,7 +163,7 @@ public class ServletAppUsuario extends HttpServlet {
      * @throws SQLException si se produce un error en la BD
      * @throws IOException  si se produce un error en I/O
      */
-    private void insertUsuario(HttpServletRequest request, HttpServletResponse response)
+    private void insertUsuarios(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         // toma los datos del formulario de usuarios
         String nombre =request.getParameter("name");
@@ -171,8 +171,8 @@ public class ServletAppUsuario extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // crea un objeto de tipo Usuario vacío y lo llena con los datos obtenidos
-        Usuario usuario = new Usuario();
+        // crea un objeto de tipo Usuarios vacío y lo llena con los datos obtenidos
+        Usuarios usuario = new Usuarios();
         usuario.setNombre(nombre);
         usuario.setCedula(cedula);
         usuario.setUsername(username);
@@ -193,7 +193,7 @@ public class ServletAppUsuario extends HttpServlet {
      * @throws SQLException si se produce un error en la BD
      * @throws IOException  si se produce un error en I/O
      */
-    private void updateUsuario(HttpServletRequest request, HttpServletResponse response)
+    private void updateUsuarios(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         // toma los datos enviados por el formulario de clientes
         int id = Integer.parseInt(request.getParameter("id"));
@@ -203,7 +203,7 @@ public class ServletAppUsuario extends HttpServlet {
         String password = request.getParameter("password");
 
         // crea un objeto vacío y lo llena con los datos del usuario
-        Usuario usuario = new Usuario();
+        Usuarios usuario = new Usuarios();
         usuario.setId(id);
         usuario.setNombre(nombre);
         usuario.setCedula(cedula);
@@ -227,7 +227,7 @@ public class ServletAppUsuario extends HttpServlet {
      * @throws SQLException si se produce un error en la BD
      * @throws IOException  si se produce un error en I/O
      */
-    private void deleteUsuario(HttpServletRequest request, HttpServletResponse response)
+    private void deleteUsuarios(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         // recibe el ID del usuario que se espera eliminar de la BD
         int id = Integer.parseInt(request.getParameter("id"));

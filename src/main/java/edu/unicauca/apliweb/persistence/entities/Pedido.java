@@ -8,6 +8,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,11 +49,11 @@ public class Pedido implements Serializable {
     @Column(name = "subtotal")
     private int subtotal;
     @JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Producto idProducto;
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuario idCliente;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Usuarios idCliente;
 
     public Pedido() {
     }
@@ -99,11 +100,11 @@ public class Pedido implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public Usuario getIdCliente() {
+    public Usuarios getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Usuario idCliente) {
+    public void setIdCliente(Usuarios idCliente) {
         this.idCliente = idCliente;
     }
 

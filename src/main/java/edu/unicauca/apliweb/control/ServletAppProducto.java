@@ -4,6 +4,7 @@
  */
 package edu.unicauca.apliweb.control;
 
+import edu.unicauca.apliweb.persistence.entities.Pedido;
 import edu.unicauca.apliweb.persistence.entities.Producto;
 import edu.unicauca.apliweb.persistence.jpa.ProductoJpaController;
 import edu.unicauca.apliweb.persistence.jpa.exceptions.IllegalOrphanException;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jnico
  */
 
-@WebServlet("/producto")
+@WebServlet("/")
 public class ServletAppProducto extends HttpServlet {
     private ProductoJpaController productoJPA;
     private final static String PU = "edu.unicauca.apliweb_Marketplace_war_1.0PU";
@@ -68,6 +69,12 @@ public class ServletAppProducto extends HttpServlet {
         List<Producto> listaProductos = productoJPA.findProductoEntities();
         for (Producto producto : listaProductos) {
             System.out.println("Nombre: " + producto.getNombre() + " Precio: " + producto.getPrecio());
+            List<Pedido> pedidos = producto.getPedidoList();
+            System.out.println("Tamaño: " + pedidos.size());
+            for (Pedido p : pedidos){
+                System.out.println("id: " + p.getIdProducto());
+            }
+
         }
         String action = request.getServletPath();
         System.out.println("Action: " + action);
@@ -83,19 +90,19 @@ public class ServletAppProducto extends HttpServlet {
 //            out.println("</body>");
 //            out.println("</html>");
             switch (action) {
-                case "/new": //Muestra el formulario para crear un nuevo cliente
+                case "/new_producto": //Muestra el formulario para crear un nuevo cliente
                     showNewForm(request, response);
                     break;
-                case "/insert": //ejecuta la creación de un nuevo cliente en la DB
+                case "/insert_producto": //ejecuta la creación de un nuevo cliente en la DB
                     insertProducto(request, response);
                     break;
-                case "/delete": //Ejecuta la eliminación de un cliente de la BD
+                case "/delete_producto": //Ejecuta la eliminación de un cliente de la BD
                     deleteProducto(request, response);
                     break;
-                case "/edit": //Muestra el formulario para editar un cliente
+                case "/edit_producto": //Muestra el formulario para editar un cliente
                     showEditForm(request, response);
                     break;
-                case "/update": //Ejecuta la edición de un cliente de la BD
+                case "/update_producto": //Ejecuta la edición de un cliente de la BD
                     updateProducto(request, response);
                     break;
                 default:
@@ -135,7 +142,7 @@ public class ServletAppProducto extends HttpServlet {
          */
         private void showNewForm (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/producto/producto.from.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/producto/producto.form.jsp");
             dispatcher.forward(request, response);
         }
 
@@ -158,7 +165,7 @@ public class ServletAppProducto extends HttpServlet {
             RequestDispatcher dispatcher = null;
             if (existingProducto != null) {
                 // si lo encuentra lo envía al formulario
-                dispatcher = request.getRequestDispatcher("vistas/producto/producto.form.jps");
+                dispatcher = request.getRequestDispatcher("vistas/producto/producto.form.jsp");
                 request.setAttribute("producto", existingProducto);
             } else {
                 // si no lo encuentra regresa a la página con la lista de los clientes
@@ -204,9 +211,12 @@ public class ServletAppProducto extends HttpServlet {
         private void updateProducto (HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
             // toma los datos enviados por el formulario de clientes
-            int id = Integer.parseInt(request.getParameter("idProducto"));
-            String nombre = request.getParameter("nombre");
-            int precio = Integer.parseInt(request.getParameter("precio"));
+            System.out.println("UpdateProducto");
+            int id = Integer.parseInt(request.getParameter("id"));
+            String nombre = request.getParameter("name");
+            int precio = Integer.parseInt(request.getParameter("price"));
+
+            System.out.println("id: " + id + ", nombre: " + nombre + ", precio: " + precio);
 
             // crea un objeto vacío y lo llena con los datos del producto
             Producto producto = new Producto();

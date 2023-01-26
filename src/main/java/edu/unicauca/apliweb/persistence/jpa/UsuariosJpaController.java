@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import edu.unicauca.apliweb.persistence.entities.Pedido;
-import edu.unicauca.apliweb.persistence.entities.Usuario;
+import edu.unicauca.apliweb.persistence.entities.Usuarios;
 import edu.unicauca.apliweb.persistence.jpa.exceptions.IllegalOrphanException;
 import edu.unicauca.apliweb.persistence.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author jnico
  */
-public class UsuarioJpaController implements Serializable {
+public class UsuariosJpaController implements Serializable {
 
-    public UsuarioJpaController(EntityManagerFactory emf) {
+    public UsuariosJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -33,24 +33,24 @@ public class UsuarioJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Usuario usuario) {
-        if (usuario.getPedidoList() == null) {
-            usuario.setPedidoList(new ArrayList<Pedido>());
+    public void create(Usuarios usuarios) {
+        if (usuarios.getPedidoList() == null) {
+            usuarios.setPedidoList(new ArrayList<Pedido>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             List<Pedido> attachedPedidoList = new ArrayList<Pedido>();
-            for (Pedido pedidoListPedidoToAttach : usuario.getPedidoList()) {
+            for (Pedido pedidoListPedidoToAttach : usuarios.getPedidoList()) {
                 pedidoListPedidoToAttach = em.getReference(pedidoListPedidoToAttach.getClass(), pedidoListPedidoToAttach.getIdPedido());
                 attachedPedidoList.add(pedidoListPedidoToAttach);
             }
-            usuario.setPedidoList(attachedPedidoList);
-            em.persist(usuario);
-            for (Pedido pedidoListPedido : usuario.getPedidoList()) {
-                Usuario oldIdClienteOfPedidoListPedido = pedidoListPedido.getIdCliente();
-                pedidoListPedido.setIdCliente(usuario);
+            usuarios.setPedidoList(attachedPedidoList);
+            em.persist(usuarios);
+            for (Pedido pedidoListPedido : usuarios.getPedidoList()) {
+                Usuarios oldIdClienteOfPedidoListPedido = pedidoListPedido.getIdCliente();
+                pedidoListPedido.setIdCliente(usuarios);
                 pedidoListPedido = em.merge(pedidoListPedido);
                 if (oldIdClienteOfPedidoListPedido != null) {
                     oldIdClienteOfPedidoListPedido.getPedidoList().remove(pedidoListPedido);
@@ -65,14 +65,14 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public void edit(Usuario usuario) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Usuarios usuarios) throws IllegalOrphanException, NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario persistentUsuario = em.find(Usuario.class, usuario.getId());
-            List<Pedido> pedidoListOld = persistentUsuario.getPedidoList();
-            List<Pedido> pedidoListNew = usuario.getPedidoList();
+            Usuarios persistentUsuarios = em.find(Usuarios.class, usuarios.getId());
+            List<Pedido> pedidoListOld = persistentUsuarios.getPedidoList();
+            List<Pedido> pedidoListNew = usuarios.getPedidoList();
             List<String> illegalOrphanMessages = null;
             for (Pedido pedidoListOldPedido : pedidoListOld) {
                 if (!pedidoListNew.contains(pedidoListOldPedido)) {
@@ -91,14 +91,14 @@ public class UsuarioJpaController implements Serializable {
                 attachedPedidoListNew.add(pedidoListNewPedidoToAttach);
             }
             pedidoListNew = attachedPedidoListNew;
-            usuario.setPedidoList(pedidoListNew);
-            usuario = em.merge(usuario);
+            usuarios.setPedidoList(pedidoListNew);
+            usuarios = em.merge(usuarios);
             for (Pedido pedidoListNewPedido : pedidoListNew) {
                 if (!pedidoListOld.contains(pedidoListNewPedido)) {
-                    Usuario oldIdClienteOfPedidoListNewPedido = pedidoListNewPedido.getIdCliente();
-                    pedidoListNewPedido.setIdCliente(usuario);
+                    Usuarios oldIdClienteOfPedidoListNewPedido = pedidoListNewPedido.getIdCliente();
+                    pedidoListNewPedido.setIdCliente(usuarios);
                     pedidoListNewPedido = em.merge(pedidoListNewPedido);
-                    if (oldIdClienteOfPedidoListNewPedido != null && !oldIdClienteOfPedidoListNewPedido.equals(usuario)) {
+                    if (oldIdClienteOfPedidoListNewPedido != null && !oldIdClienteOfPedidoListNewPedido.equals(usuarios)) {
                         oldIdClienteOfPedidoListNewPedido.getPedidoList().remove(pedidoListNewPedido);
                         oldIdClienteOfPedidoListNewPedido = em.merge(oldIdClienteOfPedidoListNewPedido);
                     }
@@ -108,9 +108,9 @@ public class UsuarioJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = usuario.getId();
-                if (findUsuario(id) == null) {
-                    throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
+                Integer id = usuarios.getId();
+                if (findUsuarios(id) == null) {
+                    throw new NonexistentEntityException("The usuarios with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -126,25 +126,25 @@ public class UsuarioJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Usuario usuario;
+            Usuarios usuarios;
             try {
-                usuario = em.getReference(Usuario.class, id);
-                usuario.getId();
+                usuarios = em.getReference(Usuarios.class, id);
+                usuarios.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The usuarios with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<Pedido> pedidoListOrphanCheck = usuario.getPedidoList();
+            List<Pedido> pedidoListOrphanCheck = usuarios.getPedidoList();
             for (Pedido pedidoListOrphanCheckPedido : pedidoListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the Pedido " + pedidoListOrphanCheckPedido + " in its pedidoList field has a non-nullable idCliente field.");
+                illegalOrphanMessages.add("This Usuarios (" + usuarios + ") cannot be destroyed since the Pedido " + pedidoListOrphanCheckPedido + " in its pedidoList field has a non-nullable idCliente field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            em.remove(usuario);
+            em.remove(usuarios);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -153,19 +153,19 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public List<Usuario> findUsuarioEntities() {
-        return findUsuarioEntities(true, -1, -1);
+    public List<Usuarios> findUsuariosEntities() {
+        return findUsuariosEntities(true, -1, -1);
     }
 
-    public List<Usuario> findUsuarioEntities(int maxResults, int firstResult) {
-        return findUsuarioEntities(false, maxResults, firstResult);
+    public List<Usuarios> findUsuariosEntities(int maxResults, int firstResult) {
+        return findUsuariosEntities(false, maxResults, firstResult);
     }
 
-    private List<Usuario> findUsuarioEntities(boolean all, int maxResults, int firstResult) {
+    private List<Usuarios> findUsuariosEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Usuario.class));
+            cq.select(cq.from(Usuarios.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -177,20 +177,20 @@ public class UsuarioJpaController implements Serializable {
         }
     }
 
-    public Usuario findUsuario(Integer id) {
+    public Usuarios findUsuarios(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Usuario.class, id);
+            return em.find(Usuarios.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getUsuarioCount() {
+    public int getUsuariosCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Usuario> rt = cq.from(Usuario.class);
+            Root<Usuarios> rt = cq.from(Usuarios.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

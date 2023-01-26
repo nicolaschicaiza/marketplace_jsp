@@ -11,7 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import edu.unicauca.apliweb.persistence.entities.Producto;
-import edu.unicauca.apliweb.persistence.entities.Usuario;
+import edu.unicauca.apliweb.persistence.entities.Usuarios;
 import edu.unicauca.apliweb.persistence.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -42,7 +42,7 @@ public class PedidoJpaController implements Serializable {
                 idProducto = em.getReference(idProducto.getClass(), idProducto.getIdProducto());
                 pedido.setIdProducto(idProducto);
             }
-            Usuario idCliente = pedido.getIdCliente();
+            Usuarios idCliente = pedido.getIdCliente();
             if (idCliente != null) {
                 idCliente = em.getReference(idCliente.getClass(), idCliente.getId());
                 pedido.setIdCliente(idCliente);
@@ -72,8 +72,8 @@ public class PedidoJpaController implements Serializable {
             Pedido persistentPedido = em.find(Pedido.class, pedido.getIdPedido());
             Producto idProductoOld = persistentPedido.getIdProducto();
             Producto idProductoNew = pedido.getIdProducto();
-            Usuario idClienteOld = persistentPedido.getIdCliente();
-            Usuario idClienteNew = pedido.getIdCliente();
+            Usuarios idClienteOld = persistentPedido.getIdCliente();
+            Usuarios idClienteNew = pedido.getIdCliente();
             if (idProductoNew != null) {
                 idProductoNew = em.getReference(idProductoNew.getClass(), idProductoNew.getIdProducto());
                 pedido.setIdProducto(idProductoNew);
@@ -133,7 +133,7 @@ public class PedidoJpaController implements Serializable {
                 idProducto.getPedidoList().remove(pedido);
                 idProducto = em.merge(idProducto);
             }
-            Usuario idCliente = pedido.getIdCliente();
+            Usuarios idCliente = pedido.getIdCliente();
             if (idCliente != null) {
                 idCliente.getPedidoList().remove(pedido);
                 idCliente = em.merge(idCliente);

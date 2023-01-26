@@ -6,11 +6,11 @@
     <div class="card">
         <div class="card-body">
             <c:if test="${producto != null}">
-            <form action="update" method="post">
+            <form action="update_producto" method="post">
                 </c:if>
 
                 <c:if test="${producto == null}">
-                <form action="insert" method="post">
+                <form action="insert_producto" method="post">
                     </c:if>
                     <caption>
                         <h2>
@@ -26,7 +26,7 @@
 
                     <c:if test="${producto != null}">
 
-                        <input type="hidden" name="id " value="<c:out value='${producto.idProducto}' />" />
+                        <input type="hidden" name="id" value="<c:out value='${producto.idProducto}' />" />
                     </c:if>
                     <fieldset class="form-group">
                         <label>Nombre</label> <input type="text" value="<c:out value='${producto.nombre}' />"

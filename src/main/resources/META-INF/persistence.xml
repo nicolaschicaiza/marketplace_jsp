@@ -5,6 +5,7 @@
     <class>edu.unicauca.apliweb.persistence.entities.Usuario</class>
     <class>edu.unicauca.apliweb.persistence.entities.Pedido</class>
     <class>edu.unicauca.apliweb.persistence.entities.Producto</class>
+    <class>edu.unicauca.apliweb.persistence.entities.Usuarios</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/awayhub?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

@@ -46,7 +46,7 @@ public class ServletAppPedido extends HttpServlet {
         List<Pedido> listaPedido = pedidoJPA.findPedidoEntities();
         //imprimimos los clientes en consola
         for (Pedido pedido : listaPedido) {
-            System.out.println("Cliente: " + pedido.getIdCliente() + ", Producto: " + pedido.getIdProducto() +
+            System.out.println("Cliente: " + pedido.getIdCliente().getNombre() + ", Producto: " + pedido.getIdProducto().getNombre() +
                     ", Cantidad: " + pedido.getCantidad() + ", Subtotal: " + pedido.getSubtotal());
         }
     }
@@ -74,7 +74,7 @@ public class ServletAppPedido extends HttpServlet {
             out.println("<h1>Lista de Pedidos en el Servlet " + request.getContextPath() + "</h1>");
             List<Pedido> listaPedidos = pedidoJPA.findPedidoEntities();
             for (Pedido pedido : listaPedidos) {
-                out.println("Cliente: " + pedido.getIdCliente() + ", Producto: " + pedido.getIdProducto() +
+                out.println("Cliente: " + pedido.getIdCliente().getNombre() + ", Producto: " + pedido.getIdProducto().getNombre() +
                         ", Cantidad: " + pedido.getCantidad() + ", Subtotal: " + pedido.getSubtotal() + "<br>");
             }
             out.println("</body>");

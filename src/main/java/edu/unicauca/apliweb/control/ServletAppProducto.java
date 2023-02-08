@@ -48,9 +48,9 @@ public class ServletAppProducto extends HttpServlet {
         //listamos todos los clientes de la base de datos y los imprimimos en consola
         List<Producto> listaProductos = productoJPA.findProductoEntities();
         //imprimimos los clientes en consola
-        for (Producto producto : listaProductos) {
-            System.out.println("Nombre: " + producto.getNombre() + " Precio: " + producto.getPrecio());
-        }
+//        for (Producto producto : listaProductos) {
+//            System.out.println("Nombre: " + producto.getNombre() + " Precio: " + producto.getPrecio());
+//        }
     }
 
 
@@ -67,17 +67,16 @@ public class ServletAppProducto extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         List<Producto> listaProductos = productoJPA.findProductoEntities();
-        for (Producto producto : listaProductos) {
-            System.out.println("Nombre: " + producto.getNombre() + " Precio: " + producto.getPrecio());
-            List<Pedido> pedidos = producto.getPedidoList();
-            System.out.println("Tamaño: " + pedidos.size());
-            for (Pedido p : pedidos){
-                System.out.println("id: " + p.getIdProducto());
-            }
-
-        }
+//        for (Producto producto : listaProductos) {
+//            System.out.println("Nombre: " + producto.getNombre() + " Precio: " + producto.getPrecio());
+//            List<Pedido> pedidos = producto.getPedidoList();
+//            System.out.println("Tamaño: " + pedidos.size());
+//            for (Pedido p : pedidos){
+//                System.out.println("id: " + p.getIdProducto());
+//            }
+//        }
         String action = request.getServletPath();
-        System.out.println("Action: " + action);
+//        System.out.println("Action: " + action);
         try {//(PrintWriter out = response.getWriter())
             /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
@@ -125,7 +124,6 @@ public class ServletAppProducto extends HttpServlet {
         private void listProductos (HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
             List<Producto> listaProducto = productoJPA.findProductoEntities();
-            System.out.println("Lista producto: " + listaProducto.size());
             request.setAttribute("listProducto", listaProducto);
             // request.setAttribute("prueba", "Hola");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/producto/producto.list.jsp");
@@ -186,6 +184,7 @@ public class ServletAppProducto extends HttpServlet {
             throws SQLException, IOException {
             // toma los datos del formulario de productos
             String nombre = request.getParameter("nombre");
+            System.out.println(request.getParameter("precio"));
             int precio = Integer.parseInt(request.getParameter("precio"));
 
             // crea un objeto de tipo Producto vacío y lo llena con los datos obtenidos

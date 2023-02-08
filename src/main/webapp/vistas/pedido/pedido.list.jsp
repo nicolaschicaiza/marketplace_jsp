@@ -30,10 +30,10 @@
                         <c:out value="${pedido.idPedido}"/>
                     </td>
                     <td>
-                        <c:out value="${pedido.idCliente}"/>
+                        <c:out value="${pedido.idCliente.getNombre()}"/>
                     </td>
                     <td>
-                        <c:out value="${pedido.idProducto}"/>
+                        <c:out value="${pedido.idProducto.getNombre()}"/>
                     </td>
                     <td>
                         <c:out value="${pedido.cantidad}"/>
@@ -42,7 +42,8 @@
                         <c:out value="${pedido.subtotal}"/>
                     </td>
                     <td><a href="pedido/edit?id=<c:out value='${pedido.idPedido}' />">Editar</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp; <a href="pedido/delete?id=<c:out value='${pedido.idPedido}' />">Eliminar</a></td>
+                        &nbsp;&nbsp;&nbsp;&nbsp; <a href="pedido/delete?id=<c:out value='${pedido.idPedido}' />">Eliminar</a>
+                    </td>
                 </tr>
             </c:forEach>
             <!-- } -->

@@ -20,6 +20,7 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Precio</th>
+                <th>Opciones</th>
             </tr>
             </thead>
             <tbody>

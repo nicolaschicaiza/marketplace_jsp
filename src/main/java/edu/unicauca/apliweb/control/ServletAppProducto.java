@@ -21,9 +21,7 @@ import javax.persistence.Persistence;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 /**
  * @author jnico
@@ -180,12 +178,13 @@ public class ServletAppProducto extends HttpServlet {
          * @throws SQLException si se produce un error en la BD
          * @throws IOException  si se produce un error en I/O
          */
+        
         private void insertProducto (HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
+            int alerta = 0;
             // toma los datos del formulario de productos
-            String nombre = request.getParameter("nombre");
-            System.out.println(request.getParameter("precio"));
-            int precio = Integer.parseInt(request.getParameter("precio"));
+            String nombre = request.getParameter("name");
+            int precio = Integer.parseInt(request.getParameter("price"));
 
             // crea un objeto de tipo Producto vacío y lo llena con los datos obtenidos
             Producto producto = new Producto();
@@ -194,9 +193,10 @@ public class ServletAppProducto extends HttpServlet {
 
             // crea el producto utilizando el objeto controlador JPA
             productoJPA.create(producto);
+            alerta = alerta + 1;
 
             // solícita al Servlet que muestre la página actualizada con la lista de producto
-            response.sendRedirect("list");
+            response.sendRedirect("producto");
         }
 
         /**

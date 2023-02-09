@@ -34,9 +34,10 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Precio</label> <input type="text" value="<c:out value='${producto.precio}' />"
-                                                    class="form-control" name="price">
+                                                    class="form-control" name="price" required="required">
                     </fieldset>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                     
                 </form>
         </div>
     </div>

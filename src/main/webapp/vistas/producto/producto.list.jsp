@@ -14,6 +14,10 @@
 <%--        <p>--%>
 <%--            <%=request.getAttribute("prueba")%>--%>
 <%--        </p>--%>
+<c:if test="${alerta == 1}">
+<p>esto es una prueba</p> 
+</c:if>
+            
         <table class="table table-bordered">
             <thead>
             <tr>
